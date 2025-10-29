@@ -245,4 +245,92 @@
       font-size: 0.9rem;
       color: #333;
     }
- 
+ .nav-item.active {
+  background-color: #e6f7ee;
+  color: #4cab74;
+}
+
+.dark-mode .nav-item.active {
+  background-color: #2b2b2b;
+  color: #66d18d;
+}
+#addEventBtn {
+  background-color: #4cab74;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#addEventBtn:hover {
+  background-color: #0074e8;
+}
+#addGroupBtn {
+  background-color: #4cab74;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#addGroupBtn:hover {
+  background-color: #0074e8;
+}
+
+.group-grid .group {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.group-grid .group:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+#changePicBtn, #saveProfileBtn {
+  background-color: #4cab74;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#changePicBtn:hover, #saveProfileBtn:hover {
+  background-color: #0074e8;
+}
+
+#saveSettingsBtn, #resetThemeBtn {
+  background-color: #4cab74;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#saveSettingsBtn:hover {
+  background-color: #0074e8;
+}
+
+#resetThemeBtn {
+  background-color: #d9534f;
+}
+
+#resetThemeBtn:hover {
+  background-color: #c9302c;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
