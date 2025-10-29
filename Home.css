@@ -167,6 +167,84 @@
       object-fit: cover;
     }
 
+    /* COMMENT SECTION */
+    .comment-section {
+      margin-top: 1rem;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+
+    .comment-input {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    .comment-input img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .comment-input input {
+      flex: 1;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .comment-input button {
+      background-color: #4cab74;
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .comment-input button:hover {
+      background-color: #0074e8;
+    }
+
+    .comments-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .comment {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .comment img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .comment-content {
+      background-color: #f0f2f5;
+      padding: 0.5rem 1rem;
+      border-radius: 18px;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+
+    .comment-content strong {
+      color: #001f3f;
+      margin-right: 0.5rem;
+    }
+    /*END OF COMMENT SECTION */
     /* RIGHT SIDEBAR */
     .right-sidebar {
       display: flex;
