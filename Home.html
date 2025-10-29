@@ -57,10 +57,29 @@
           <h4>Jane Doe</h4>
         </div>
         <p>
-          Excited for our upcoming community cleanup this weekend! Let’s make
-          our park beautiful again 🌳
+          Excited for our upcoming community cleanup this weekend! Let's make our park beautiful again 🌳
         </p>
         <img src="images/banner_img.jpg" alt="Post image" class="post-image" />
+        <!-- SAMPLE COMMENT SECTIONS - JK-->
+        <div class="comment-section">
+          <div class="comments-container">
+            <div class="comment">
+              <!--pulls image from user profile - JK -->
+              <img src="images/pfp_3.png" alt="User" />
+              <div class="comment-content">
+                <!--example user and their comment - JK -->
+                <strong>Alex Kim</strong>
+                Count me in! What time does it start?
+              </div>
+            </div>
+          </div>
+          <!--HTML for your write a comment input plus icon for send- JK -->
+          <div class="comment-input">
+            <img src="images/pfp_1.png" alt="Your Profile" />
+            <input type="text" placeholder="Write a comment..." />
+            <button><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
       </div>
 
       <br />
@@ -73,6 +92,14 @@
           Thanks to everyone who joined the local fundraiser! We raised over
           $2,000 for the shelter ❤️
         </p>
+        <div class="comment-section">
+          <div class="comments-container"></div>
+          <div class="comment-input">
+            <img src="images/pfp_1.png" alt="Your Profile" />
+            <input type="text" placeholder="Write a comment..." />
+            <button><i class="fa-solid fa-paper-plane"></i></button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -149,16 +176,61 @@
             <h4>You</h4>
           </div>
           <p>${text}</p>
+          
+
+          
         `;
         feed.insertBefore(post, feed.children[1]);
         textarea.value = "";
-      } else {
+        //comment functionality that handles what happens if nothing is put in comment box - JK
+        setupCommentFunctionality(post);
+      } else 
+      {
         alert("Please type something before posting!");
       }
     });
 
+    //Comment functionality that registers click delection and reads values from user - JK
+    function setupCommentFunctionality(post) 
+    {
+      const input = post.querySelector('.comment-input input');
+      const button = post.querySelector('.comment-input button');
+      const container = post.querySelector('.comments-container');
+
+      button.addEventListener('click', () => 
+      {
+        const text = input.value.trim();
+        if (text !== '') 
+        {
+          const comment = document.createElement('div');
+          comment.classList.add('comment');
+          comment.innerHTML = `
+            <img src="images/pfp_1.png" alt="Your Profile" />
+            <div class="comment-content">
+              <strong>You</strong>
+              ${text}
+            </div>
+          `;
+          container.appendChild(comment);
+          input.value = '';
+        }
+      });
+
+      //if enter is pressed, that means the comment goes through can be changed to any key - JK
+      input.addEventListener('keypress', (e) => 
+      {
+        if (e.key === 'Enter') 
+        {
+          button.click();
+        }
+      });
+    }
+
+    // Setup comment functionality for existing posts
+    document.querySelectorAll('.post').forEach(setupCommentFunctionality);
+
     // ======================
-    // 2. RSVP BUTTON ACTIONS
+    // 3. RSVP BUTTON ACTIONS
     // ======================
     document.querySelectorAll(".event button").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -169,7 +241,7 @@
     });
 
     // ======================
-    // 3. THEME TOGGLE
+    // 4. THEME TOGGLE
     // ======================
     const toggle = document.getElementById("themeToggle");
     toggle.addEventListener("click", () => {
@@ -256,6 +328,30 @@
 
   .dark-mode .event button:hover {
     background-color: #3296ff;
+  }
+
+  /*dark mode compatability with comment section - JK */
+  .dark-mode .comment-section 
+  {
+    border-top: 1px solid #2a2a2a;
+  }
+  /*makes buttons gray and the text white when in dark - JK */
+  .dark-mode .comment-input input 
+  {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #fff;
+  }
+
+  .dark-mode .comment-content 
+  {
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+  }
+  /*makes user name green - JK */
+  .dark-mode .comment-content strong 
+  {
+    color: #66d18d;
   }
 </style>
 
