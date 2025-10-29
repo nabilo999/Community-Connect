@@ -56,7 +56,7 @@ main {
 /* BANNER SECTION */
 .banner {
       position: relative;
-      background: url('/images/banner_img.jpg') center/cover no-repeat;
+      background: url('images/banner_img.jpg') center/cover no-repeat;
       min-height: 45vh;
       max-height: 60vh;
       display: flex;
