@@ -24,15 +24,8 @@ export default function Profile() {
 
   return (
     <main>
-      <aside className="left-sidebar">
-        <div className="nav-card">
-          <a href="#" className="nav-item">Home</a>
-          <a href="#" className="nav-item">Groups</a>
-          <a href="#" className="nav-item">Events</a>
-          <a href="#" className="nav-item active">Profile</a>
-          <a href="#" className="nav-item">Settings</a>
-        </div>
-      </aside>
+      <Sidebar />
+
 
       <section className="feed">
         <h1>My Profile</h1>

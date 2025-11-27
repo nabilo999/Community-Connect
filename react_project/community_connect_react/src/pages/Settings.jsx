@@ -35,15 +35,7 @@ export default function Settings() {
 
   return (
     <main>
-      <aside className="left-sidebar">
-        <div className="nav-card">
-          <a href="#" className="nav-item">Home</a>
-          <a href="#" className="nav-item">Groups</a>
-          <a href="#" className="nav-item">Events</a>
-          <a href="#" className="nav-item">Profile</a>
-          <a href="#" className="nav-item active">Settings</a>
-        </div>
-      </aside>
+      <Sidebar />
 
       <section className="feed">
         <h1>Settings</h1>

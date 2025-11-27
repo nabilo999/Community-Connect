@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import '../../../../pre_react_files/Home.css';
+import '../styles/global.css';
+import Sidebar from "./Sidebar";
 
 export default function Home() {
   const [posts, setPosts] = useState([
@@ -56,15 +57,8 @@ export default function Home() {
 
   return (
     <main>
-      <aside className="left-sidebar">
-        <div className="nav-card">
-          <a href="#" className="nav-item">Home</a>
-          <a href="#" className="nav-item">Groups</a>
-          <a href="#" className="nav-item">Events</a>
-          <a href="#" className="nav-item">Profile</a>
-          <a href="#" className="nav-item">Settings</a>
-        </div>
-      </aside>
+      <Sidebar />
+      
 
       <section className="feed">
         <div className="composer">

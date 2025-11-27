@@ -27,15 +27,8 @@ export default function Groups() {
 
   return (
     <main>
-      <aside className="left-sidebar">
-        <div className="nav-card">
-          <a href="#" className="nav-item">Home</a>
-          <a href="#" className="nav-item active">Groups</a>
-          <a href="#" className="nav-item">Events</a>
-          <a href="#" className="nav-item">Profile</a>
-          <a href="#" className="nav-item">Settings</a>
-        </div>
-      </aside>
+      <Sidebar />
+
 
       <section className="feed">
         <h1>Community Groups</h1>
