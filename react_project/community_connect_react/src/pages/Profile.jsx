@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
-import '../../../../pre_react_files/Home.css';
+import '../styles/global.css';
+import Sidebar from "./Sidebar";
+import Header from "./Header";
 
 export default function Profile() {
-  const [profilePic, setProfilePic] = useState('../../../../pre_react_files/images/pfp_1.png');
+  const [profilePic, setProfilePic] = useState('../../assets/pfp_1.png');
   const [name, setName] = useState('Maria Garcia');
   const [email, setEmail] = useState('maria.garcia@email.com');
   const [bio, setBio] = useState('Community organizer and coffee enthusiast ☕🌱');
@@ -22,11 +24,11 @@ export default function Profile() {
     setTimeout(() => setShowSaved(false), 2000);
   }
 
-  return (
-    <main>
-      <Sidebar />
-
-
+  return (<>
+    <Header/>
+      <main>
+      
+      <Sidebar/>
       <section className="feed">
         <h1>My Profile</h1>
         <p>View and update your personal information below.</p>
@@ -59,5 +61,6 @@ export default function Profile() {
         {showSaved && <p id="saveMessage" style={{ marginTop: '1rem', color: '#4cab74' }}>✅ Profile updated successfully!</p>}
       </section>
     </main>
+    </>
   );
 }

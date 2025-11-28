@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import '../../../../pre_react_files/Home.css';
+import '../styles/global.css';
+import Sidebar from "./Sidebar";
+import Header from "./Header";
 
 export default function Settings() {
   const [notifications, setNotifications] = useState(true);
@@ -34,8 +36,11 @@ export default function Settings() {
   }
 
   return (
+  <>
+    <Header/>
     <main>
-      <Sidebar />
+      
+      <Sidebar/>
 
       <section className="feed">
         <h1>Settings</h1>
@@ -70,5 +75,6 @@ export default function Settings() {
         {showSaved && <p id="saveMessage" style={{ marginTop: '1rem', color: '#4cab74' }}>✅ Settings saved successfully!</p>}
       </section>
     </main>
+  </>
   );
 }

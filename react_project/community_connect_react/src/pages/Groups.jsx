@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import '../../../../pre_react_files/Home.css';
+import '../styles/global.css';
+import Sidebar from "./Sidebar";
+import Header from "./Header";
 
 export default function Groups() {
   const [groups, setGroups] = useState([
-    { id: 1, name: 'Garden Club', img: '../../../../pre_react_files/images/post_1.jpg' },
-    { id: 2, name: 'Volunteers', img: '../../../../pre_react_files/images/volunteer.jpg' },
-    { id: 3, name: 'Baking Club', img: '../../../../pre_react_files/images/pie.png' },
-    { id: 4, name: 'Neighborhood Watch', img: '../../../../pre_react_files/images/megaphone_ic.png' }
+    { id: 1, name: 'Garden Club', img: '../../assets/post_1.jpg' },
+    { id: 2, name: 'Volunteers', img: '../../assets/volunteer.jpg' },
+    { id: 3, name: 'Baking Club', img: '../../assets/pie.png' },
+    { id: 4, name: 'Neighborhood Watch', img: '../../assets/megaphone_ic.png' }
   ]);
 
   const [name, setName] = useState('');
@@ -18,7 +20,7 @@ export default function Groups() {
       alert('Please enter a group name!');
       return;
     }
-    const url = img.trim() || '../../../../pre_react_files/images/logo_1_Unity.png';
+    const url = img.trim() || '../../assets/logo_1_Unity.png';
     const g = { id: Date.now(), name: trimmed, img: url };
     setGroups((s) => [...s, g]);
     setName('');
@@ -26,8 +28,11 @@ export default function Groups() {
   }
 
   return (
-    <main>
-      <Sidebar />
+    <>
+    <Header/>
+      <main>
+        
+        <Sidebar/>
 
 
       <section className="feed">
@@ -53,5 +58,6 @@ export default function Groups() {
         </div>
       </section>
     </main>
+    </>
   );
 }

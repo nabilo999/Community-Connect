@@ -430,11 +430,12 @@ input[type="checkbox"] {
 }
 
 /* MAIN CONTENT */
-main {
-  flex: 1;
-  min-height: 80vh;
-  padding: 2rem;
-}
+  main {
+    display: grid;
+    grid-template-columns: 1fr 2.3fr 1fr;
+    gap: 1.5rem;
+    padding: 2rem;
+  }
 
 /* BANNER SECTION */
 .banner {
