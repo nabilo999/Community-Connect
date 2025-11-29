@@ -104,16 +104,30 @@ export default function Home() {
       </section>
 
       <aside className="right-sidebar">
-        <div className="card">
           <h3>Recent Events</h3>
-          <div className="event">
-            <div className="event-info">
-              <h4>Neighborhood Cleanup</h4>
-              <p>Oct 30, 2025</p>
-            </div>
-            <button>RSVP</button>
+          <div class="card">
+        <div class="event">
+          <div class="event-info">
+            <h4>Neighborhood Cleanup</h4>
+            <p>Oct 30, 2025</p>
           </div>
+          <button>RSVP</button>
         </div>
+        <div class="event">
+          <div class="event-info">
+            <h4>Food Drive</h4>
+            <p>Nov 3, 2025</p>
+          </div>
+          <button>RSVP</button>
+        </div>
+        <div class="event">
+          <div class="event-info">
+            <h4>Holiday Meetup</h4>
+            <p>Dec 10, 2025</p>
+          </div>
+          <button>RSVP</button>
+        </div>
+      </div>
       </aside>
     </main>
     </>

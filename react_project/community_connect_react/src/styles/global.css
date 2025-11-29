@@ -321,6 +321,109 @@
   color: #4cab74;
 }
 
+.dark-mode {
+    background-color: #121212;
+    color: #f5f5f5;
+  }
+
+  .dark-mode header {
+    background-color: #16253a;
+  }
+
+  .dark-mode .nav-item {
+    color: #e0e0e0;
+  }
+  .dark-mode .nav-item:hover {
+    background-color: #243b5a;
+    color: #ffffff;
+  }
+/* Fix dim sidebar buttons in dark mode */
+.dark-mode .left-sidebar .nav-card {
+  background-color: #1c1c1c;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .nav-item {
+  color: #f0f0f0;           /* Bright text */
+  border-bottom: 1px solid #333;
+  background-color: transparent;
+}
+
+.dark-mode .nav-item:hover {
+  background-color: #2b2b2b;
+  color: #66d18d;           /* Green highlight on hover */
+}
+
+.dark-mode .nav-item i {
+  color: #66d18d;           /* Icon color stays visible */
+}
+
+  .dark-mode .composer,
+  .dark-mode .post,
+  .dark-mode .card {
+    background: #1e1e1e;
+    color: #f5f5f5;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+  }
+
+  .dark-mode .post p,
+  .dark-mode .card p,
+  .dark-mode .event-info h4,
+  .dark-mode .event-info p {
+    color: #d6d6d6;
+  }
+
+  .dark-mode h3,
+  .dark-mode h4 {
+    color: #ffffff;
+  }
+
+  .dark-mode .composer textarea {
+    background-color: #2a2a2a;
+    color: #fff;
+    border: 1px solid #555;
+  }
+
+  .dark-mode .composer button {
+    background-color: #4cab74;
+  }
+
+  .dark-mode .composer button:hover {
+    background-color: #66d18d;
+  }
+
+  .dark-mode .event button {
+    background-color: #0074e8;
+  }
+
+  .dark-mode .event button:hover {
+    background-color: #3296ff;
+  }
+
+  /*dark mode compatability with comment section - JK */
+  .dark-mode .comment-section 
+  {
+    border-top: 1px solid #2a2a2a;
+  }
+  /*makes buttons gray and the text white when in dark - JK */
+  .dark-mode .comment-input input 
+  {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #fff;
+  }
+
+  .dark-mode .comment-content 
+  {
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+  }
+  /*makes user name green - JK */
+  .dark-mode .comment-content strong 
+  {
+    color: #66d18d;
+  }
+
 .dark-mode .nav-item.active {
   background-color: #2b2b2b;
   color: #66d18d;
@@ -440,7 +543,7 @@ input[type="checkbox"] {
 /* BANNER SECTION */
 .banner {
       position: relative;
-      background: url('images/banner_img.png') center/cover no-repeat;
+      background: url('../../assets/banner_img.png') center/cover no-repeat;
       min-height: 45vh;
       max-height: 60vh;
       display: flex;
