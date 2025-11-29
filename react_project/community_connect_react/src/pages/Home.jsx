@@ -104,8 +104,9 @@ export default function Home() {
       </section>
 
       <aside className="right-sidebar">
-          <h3>Recent Events</h3>
-          <div class="card">
+          
+        <div class="card">
+            <h3>Recent Events</h3>
         <div class="event">
           <div class="event-info">
             <h4>Neighborhood Cleanup</h4>
