@@ -11,11 +11,11 @@ export default function Landing() {
 					<img src="../../assets/logo_2_Unity.png" alt="CommunityConnect Logo" />
 				</div>
 				<div className="nav-buttons">
-                    <Link to="/">
+                    <Link to="/auth">
                     <i></i>&nbsp; Sign Up
                     </Link>
 
-                    <Link to="/">
+                    <Link to="/auth">
                     <i></i>&nbsp; Login
                     </Link>
 					

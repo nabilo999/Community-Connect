@@ -667,3 +667,98 @@ footer a {
 footer a:hover {
   color: white;
 }
+
+.auth-container {
+width: 100vw;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+background: #f3f3f3;
+padding: 32px;
+}
+
+
+.auth-title {
+text-align: center;
+font-size: 24px;
+font-weight: 700;
+color: #333;
+margin-bottom: 24px;
+}
+
+
+.auth-form {
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+.auth-card {
+background: white;
+padding: 32px;
+width: 100%;
+max-width: 380px;
+border-radius: 20px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.auth-input-field {
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 12px;
+font-size: 14px;
+}
+
+
+.auth-login-btn {
+padding: 12px;
+border-radius: 999px;
+background: #98c9a3;
+color: white;
+font-weight: 600;
+border: none;
+cursor: pointer;
+transition: 0.2s ease;
+}
+
+
+.auth-login-btn:hover {
+background: #8bbd96;
+}
+
+
+.auth-link-container {
+text-align: center;
+margin-top: 10px;
+font-size: 14px;
+color: #666;
+}
+
+
+.auth-link {
+background: none;
+border: none;
+color: #6a7caf;
+cursor: pointer;
+text-decoration: underline;
+position: relative;
+transition: color 0.2s;
+}
+
+
+.auth-auth-link:hover {
+color: #4a5c9e;
+}
+
+
+.auth-link:hover::after {
+content: "";
+position: absolute;
+left: 0;
+bottom: -2px;
+width: 100%;
+height: 2px;
+background: rgba(255, 255, 255, 0.7);
+filter: blur(2px);
+}

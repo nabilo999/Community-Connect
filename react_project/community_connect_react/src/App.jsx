@@ -6,6 +6,7 @@ import Settings from './pages/Settings.jsx';
 import Profile from './pages/Profile.jsx';
 import Landing from './pages/landing.jsx';
 import Events from './pages/Events.jsx';
+import Auth from './pages/Auth.jsx';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/landing" element={<Landing />} />
       <Route path="/events" element={<Events />} />
+      <Route path="/auth" element={<Auth />} />
 
 
     </Routes>
