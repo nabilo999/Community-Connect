@@ -1,39 +1,149 @@
-import React from "react";
-import '../styles/global.css';
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import "../styles/global.css";
+import { Link, useNavigate } from "react-router-dom";
 
+//port that we are connecting to 
+const API_BASE = "http://localhost:5000"; 
 
 export default function AuthPage() {
-return (
-<div className="auth-container">
-<div className="auth-card">
-<h1 className="auth-title">Welcome Back</h1>
+    //mode controls if the form is in login or sign up state
+  const [mode, setMode] = useState("login"); 
+  //inputs for email, name, and password (name only for sign up)
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  //in case any errors happen
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
+    //react hook
+  const navigate = useNavigate();
 
-<form className="auth-form">
-<input type="email" placeholder="Email" className="auth-input-field" />
+  async function handleSubmit(e) 
+{
+    //make sure default form is not reloaded
+    e.preventDefault();
+    //remove error messages
+    setError("");
+    //show the please wait so user knows the form is being accepted
+    setLoading(true);
 
+    try 
+    {
+        //mode will determine either to call login or sign up
+      const endpoint =
+        mode === "signup" ? "/api/auth/register" : "/api/auth/login";
+        //sing up needs name email and password and login only email and password
+      const body =
+        mode === "signup"
+          ? { name, email, password }
+          : { email, password };
+        //we send a POST request to our mongodb
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      //handles response from db
+      const data = await res.json();
+      //edge case if we get an error from db 
+      if (!res.ok) 
+      {
+        throw new Error(data.message || "Something went wrong");
+      }
 
-<input
-type="password"
-placeholder="Password"
-className="auth-input-field"
-/>
+      //save the user and token in the localStorage and user is logged in
+      localStorage.setItem("cc_token", data.token);
+      localStorage.setItem("cc_user", JSON.stringify(data.user));
 
-<button type="submit" className="auth-login-btn">
-Login
-</button>
-</form>
+      //take user to the home feed
+      navigate("/");
+    } catch (err) 
+    {
+      setError(err.message);
+    } finally 
+    {
+      setLoading(false);
+    }
+  }
+//returning everything for react
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h1 className="auth-title">
+          {mode === "login" ? "Welcome Back" : "Create an Account"}
+        </h1>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          {mode === "signup" && (
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="auth-input-field"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
 
+          <input
+            type="email"
+            placeholder="Email"
+            className="auth-input-field"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-<div className="auth-link-container">
-<Link className="auth-link" to="/"><i></i>Forgot Password?</Link></div>
+          <input
+            type="password"
+            placeholder="Password"
+            className="auth-input-field"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-<div className="auth-link-container">
-Don’t have an account? <Link className="auth-link" to="/"><i></i>Sign Up</Link>
+          {error && (
+            <p style={{ color: "red", fontSize: 14, marginTop: 4 }}>{error}</p>
+          )}
 
-</div>
-</div>
-</div>
-);
+          <button type="submit" className="auth-login-btn" disabled={loading}>
+            {loading
+              ? "Please wait..."
+              : mode === "login"
+              ? "Login"
+              : "Sign Up"}
+          </button>
+        </form>
+
+        <div className="auth-link-container">
+          {mode === "login" ? (
+            <>
+              Don’t have an account?{" "}
+              <button
+                type="button"
+                className="auth-link"
+                onClick={() => setMode("signup")}
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <button
+                type="button"
+                className="auth-link"
+                onClick={() => setMode("login")}
+              >
+                Login
+              </button>
+            </>
+          )}
+        </div>
+        <div className="auth-link-container">
+          <Link className="auth-link" to="/">
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }
