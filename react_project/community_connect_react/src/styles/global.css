@@ -543,7 +543,7 @@ input[type="checkbox"] {
 /* BANNER SECTION */
 .banner {
       position: relative;
-      background: url('../../assets/banner_img.png') center/cover no-repeat;
+      background: url('/assets/banner_img.png') center/cover no-repeat;
       min-height: 45vh;
       max-height: 60vh;
       display: flex;

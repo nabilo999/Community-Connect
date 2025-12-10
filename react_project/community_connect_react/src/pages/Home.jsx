@@ -8,17 +8,17 @@ export default function Home() {
     {
       id: 1,
       author: 'Jane Doe',
-      avatar: '../../assets/pfp_2.png',
+      avatar: '/assets/pfp_2.png',
       text: "Excited for our upcoming community cleanup this weekend! Let's make our park beautiful again 🌳",
-      image: '../../assets/banner_img.png',
+      image: '/assets/banner_img.png',
       comments: [
-        { id: 1, author: 'Alex Kim', text: 'Count me in! What time does it start?', avatar: '../../assets/pfp_5.png' }
+        { id: 1, author: 'Alex Kim', text: 'Count me in! What time does it start?', avatar: '/assets/pfp_5.png' }
       ]
     },
     {
       id: 2,
       author: 'Alex Kim',
-      avatar: '../../assets/pfp_5.png',
+      avatar: '/assets/pfp_5.png',
       text: 'Thanks to everyone who joined the local fundraiser! We raised over $2,000 for the shelter ❤️',
       image: null,
       comments: []
@@ -40,7 +40,7 @@ export default function Home() {
     const newPost = {
       id: Date.now(),
       author: 'You',
-      avatar: '../../assets/pfp_1.png',
+      avatar: '/assets/pfp_1.png',
       text,
       image: null,
       comments: []
@@ -65,7 +65,7 @@ export default function Home() {
       
       <section className="feed">
         <div className="composer">
-          <img src="../../assets/pfp_1.png" alt="Profile" />
+          <img src="/assets/pfp_1.png" alt="Profile" />
           <textarea rows="2" value={composerText} onChange={(e) => setComposerText(e.target.value)} placeholder="Share an update..."></textarea>
           <div className="buttons">
             <button title="Attach">📎</button>
@@ -139,7 +139,7 @@ function CommentInput({ onSend }) {
   const [text, setText] = useState('');
   return (
     <div className="comment-input">
-      <img src="../../assets/pfp_1.png" alt="You" />
+      <img src="/assets/pfp_1.png" alt="You" />
       <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Write a comment..." onKeyDown={(e) => e.key === 'Enter' && (onSend(text), setText(''))} />
       <button onClick={() => { onSend(text); setText(''); }}>➤</button>
     </div>

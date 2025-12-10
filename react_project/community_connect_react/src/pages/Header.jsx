@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <header>
       <div className="logo">
-        <img src='../../assets/logo_2_Unity.png' alt="CommunityConnect Logo" />
+        <img src='/assets/logo_2_Unity.png' alt="CommunityConnect Logo" />
       </div>
 
       <div className="nav-links">

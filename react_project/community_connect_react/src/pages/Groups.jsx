@@ -5,10 +5,10 @@ import Header from "./Header";
 
 export default function Groups() {
   const [groups, setGroups] = useState([
-    { id: 1, name: 'Garden Club', img: '../../assets/post_1.jpg' },
-    { id: 2, name: 'Volunteers', img: '../../assets/volunteer.jpg' },
-    { id: 3, name: 'Baking Club', img: '../../assets/pie.png' },
-    { id: 4, name: 'Neighborhood Watch', img: '../../assets/megaphone_ic.png' }
+    { id: 1, name: 'Garden Club', img: '/assets/post_1.jpg' },
+    { id: 2, name: 'Volunteers', img: '/assets/volunteer.jpg' },
+    { id: 3, name: 'Baking Club', img: '/assets/pie.png' },
+    { id: 4, name: 'Neighborhood Watch', img: '/assets/megaphone_ic.png' }
   ]);
 
   const [name, setName] = useState('');
@@ -20,7 +20,7 @@ export default function Groups() {
       alert('Please enter a group name!');
       return;
     }
-    const url = img.trim() || '../../assets/logo_1_Unity.png';
+    const url = img.trim() || '/assets/logo_1_Unity.png';
     const g = { id: Date.now(), name: trimmed, img: url };
     setGroups((s) => [...s, g]);
     setName('');

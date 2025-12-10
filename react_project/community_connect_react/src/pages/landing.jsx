@@ -8,7 +8,7 @@ export default function Landing() {
 		<div>
 			<header>
 				<div className="logo">
-					<img src="../../assets/logo_2_Unity.png" alt="CommunityConnect Logo" />
+					<img src="/assets/logo_2_Unity.png" alt="CommunityConnect Logo" />
 				</div>
 				<div className="nav-buttons">
                     <Link to="/auth">
@@ -38,17 +38,17 @@ export default function Landing() {
 				<h2>How It Works</h2>
 				<div className="cards">
 					<div className="card">
-						<img src="../../assets/bubble_ic.png" alt="Connect" />
+						<img src="/assets/bubble_ic.png" alt="Connect" />
 						<h3>Connect</h3>
 						<p>Join local or interest-based communities to share ideas, updates, and opportunities for collective action.</p>
 					</div>
 					<div className="card">
-						<img src="../../assets/calandar_ic.png" alt="Organize" />
+						<img src="/assets/calandar_ic.png" alt="Organize" />
 						<h3>Organize</h3>
 						<p>Plan events, fundraisers, or discussions with tools that make coordination easy and transparent.</p>
 					</div>
 					<div className="card">
-						<img src="../../assets/megaphone_ic.png" alt="Decide" />
+						<img src="/assets/megaphone_ic.png" alt="Decide" />
 						<h3>Decide Together</h3>
 						<p>Run polls, discussions, and votes to ensure every voice matters and decisions are community-driven.</p>
 					</div>
