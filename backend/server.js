@@ -6,8 +6,23 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
+const allowedOrigins = 
+[
+  //for local testing
+  'http://localhost:5173',        
+  //for render hosting
+  process.env.CLIENT_ORIGIN      
+  //removes any undefined variables
+].filter(Boolean); 
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
+
 //middleware for connecting to db 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 
 //routes used for authentication
@@ -21,17 +36,18 @@ app.get('/', (req, res) => {
 //connect to MongoDB
 const PORT = process.env.PORT || 5000;
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
+mongoose.connect(process.env.MONGO_URI).then(() => 
+  {
     console.log('Community Connect is using Mongodb properly');
-    app.listen(PORT, () => {
+    app.listen(PORT, () => 
+    {
     //supposed to be on 5000
       console.log(`Server is on port ${PORT}`);
     });
   })
   //for case where the db is not working for some reason
-  .catch((err) => {
+  .catch((err) => 
+  {
     console.error('Mongodb connection error:', err);
     process.exit(1);
   });
