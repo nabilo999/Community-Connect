@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "../styles/global.css";
 import { Link, useNavigate } from "react-router-dom";
 
-//port that we are connecting to 
-const API_BASE = "http://localhost:5000"; 
+//port that we are connecting to for local or backend for prod
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"; 
 
 export default function AuthPage() {
     //mode controls if the form is in login or sign up state
