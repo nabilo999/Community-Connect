@@ -11,11 +11,11 @@ import Auth from './pages/Auth.jsx';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/groups" element={<Groups />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/landing" element={<Landing />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/events" element={<Events />} />
       <Route path="/auth" element={<Auth />} />
 

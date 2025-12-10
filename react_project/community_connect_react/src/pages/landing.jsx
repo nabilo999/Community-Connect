@@ -12,11 +12,11 @@ export default function Landing() {
 				</div>
 				<div className="nav-buttons">
                     <Link to="/auth">
-                    <i></i>&nbsp; Sign Up
+                    <i></i> Sign Up
                     </Link>
 
                     <Link to="/auth">
-                    <i></i>&nbsp; Login
+                    <i></i> Login
                     </Link>
 					
 				</div>
@@ -28,8 +28,10 @@ export default function Landing() {
 					<h1>Connect. Act. Thrive</h1>
 					<p>Your platform for collective action</p>
 					<div className="banner-buttons">
-						<a href="#">Join Community</a>
-						<a href="#">Create Community</a>
+						<Link to="/auth">
+						<i></i>Join Community</Link>
+						<Link to="/auth">
+						<i></i>Create Community</Link>
 					</div>
 				</div>
 			</section>

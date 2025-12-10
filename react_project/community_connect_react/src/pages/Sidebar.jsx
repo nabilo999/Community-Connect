@@ -6,7 +6,7 @@ function Sidebar() {
     return (
         <aside className="left-sidebar">
             <div className="nav-card">
-                <Link to="/" className="nav-item">
+                <Link to="/home" className="nav-item">
                     <i className="fa-solid fa-house"></i>&nbsp; Home
                 </Link>
 

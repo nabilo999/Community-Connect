@@ -30,7 +30,7 @@ const Header = () => {
           <i className={`fa-solid ${dark ? "fa-sun" : "fa-moon"}`}></i>&nbsp; Theme
         </a>
 
-        <Link to="/landing">
+        <Link to="/">
           <i className="fa-solid fa-sign-out"></i>&nbsp; Log Out
         </Link>
       </div>
