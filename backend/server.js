@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
+const postRoutes = require('./routes/posts');
 
 const app = express();
 
@@ -23,10 +24,11 @@ app.use(
 );
 
 //middleware for connecting to db 
-app.use(express.json());
+app.use(express.json({limit: "10mb"}));
 
 //routes used for authentication
 app.use('/api/auth', authRoutes);
+app.use("/api/posts", postRoutes);
 
 //making sure our API is working good
 app.get('/', (req, res) => {

@@ -80,7 +80,7 @@ router.post('/login', async (req, res) =>
     {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
-    //create a tplem fpr tje iser tp access website
+    //create a token for the user to access website
     const token = createToken(user);
     //edge case for if the user is created but server fails
     res.json({
