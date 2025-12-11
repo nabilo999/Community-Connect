@@ -5,15 +5,46 @@ import Header from "./Header";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"; //connections
 
-// Temporary current user info.
-// TODO: once auth is wired up, replace this with real logged-in user data.
-const CURRENT_USER = {
+// Default user (used if no logged-in user is stored)
+const DEFAULT_USER = {
   id: "demo-user-1",
   name: "You",
   avatarUrl: "../../assets/pfp_1.png"
 };
 
+// helper: load current user from localStorage
+function loadCurrentUser() {
+  try {
+    const raw = window.localStorage.getItem("cc_user");
+    if (!raw) return DEFAULT_USER;
+    const user = JSON.parse(raw);
+    return {
+      id: user.id || DEFAULT_USER.id,
+      name: user.name || DEFAULT_USER.name,
+      avatarUrl: user.avatarUrl || DEFAULT_USER.avatarUrl
+    };
+  } catch (e) {
+    console.error("Failed to read cc_user from localStorage", e);
+    return DEFAULT_USER;
+  }
+}
+
+// helper: build headers including Authorization if we have a token
+function getAuthHeaders() {
+  const headers = { "Content-Type": "application/json" };
+  try {
+    const token = window.localStorage.getItem("cc_token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  } catch (e) {
+    console.error("Failed to read cc_token from localStorage", e);
+  }
+  return headers;
+}
+
 export default function Home() {
+  const [currentUser, setCurrentUser] = useState(DEFAULT_USER);
   const [posts, setPosts] = useState([]);
   const [composerText, setComposerText] = useState('');
   const [eventTime, setEventTime] = useState('');
@@ -23,51 +54,52 @@ export default function Home() {
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [error, setError] = useState('');
 
+  // load user once from localStorage when component mounts
+  useEffect(() => {
+    setCurrentUser(loadCurrentUser());
+  }, []);
+
   //load all the posts from the backend
-  useEffect(() => 
-    {
-    async function fetchPosts() 
-    {
-      try 
-      {
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
         setLoadingPosts(true);
-        const res = await fetch(`${API_BASE}/api/posts`);
-        if (!res.ok) 
-        {
-          throw new Error('Failed to fetch posts');
+        const res = await fetch(`${API_BASE}/api/posts`, {
+          headers: getAuthHeaders()
+        });
+
+        const data = await res.json().catch(() => null);
+
+        if (!res.ok) {
+          throw new Error(data?.message || 'Failed to fetch posts');
         }
-        const data = await res.json();
-        setPosts(data);
-      } catch (err) 
-      {
+        setPosts(data || []);
+      } catch (err) {
         console.error(err);
         setError('Could not load posts. Please try again later.');
-      } finally 
-      {
+      } finally {
         setLoadingPosts(false);
       }
     }
 
     fetchPosts();
   }, []);
+
   //function to handle image changes
-  function handleImageChange(e) 
-  {
+  function handleImageChange(e) {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onloadend = () => 
-    {
-      setImageData(reader.result); // base64 string
+    reader.onloadend = () => {
+      setImageData(reader.result);
     };
     reader.readAsDataURL(file);
   }
 
   async function handleCreatePost() {
     const text = composerText.trim();
-    if (!text) 
-    {
+    if (!text) {
       alert('Please type something before posting!');
       return;
     }
@@ -75,137 +107,123 @@ export default function Home() {
     setLoadingPost(true);
     setError('');
 
-    try 
-    {
-      const body = 
-      {
-        userId: CURRENT_USER.id,
-        authorName: CURRENT_USER.name,
-        avatarUrl: CURRENT_USER.avatarUrl,
+    try {
+      const body = {
+        userId: currentUser.id,
+        authorName: currentUser.name,
+        avatarUrl: currentUser.avatarUrl,
         description: text,
         eventTime,
         location,
         image: imageData
       };
 
-      const res = await fetch(`${API_BASE}/api/posts`, 
-      {
+      const res = await fetch(`${API_BASE}/api/posts`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(body)
       });
 
-      if (!res.ok) 
-      {
-        throw new Error('Failed to create post');
+      const newPost = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(newPost?.message || 'Failed to create post');
       }
 
-      const newPost = await res.json();
       setPosts((prev) => [newPost, ...prev]);
 
-      // reset composer
+      //reset composer
       setComposerText('');
       setEventTime('');
       setLocation('');
       setImageData(null);
-    } catch (err) 
-    {
+    } catch (err) {
       console.error(err);
-      setError('There was a problem creating your post.');
-    } finally 
-    {
+      setError(err.message || 'There was a problem creating your post.');
+    } finally {
       setLoadingPost(false);
     }
   }
 
-  async function handleAddComment(postId, text) 
-  {
+  async function handleAddComment(postId, text) {
     const trimmed = text.trim();
     if (!trimmed) return;
 
-    try 
-    {
-      const res = await fetch(`${API_BASE}/api/posts/${postId}/comments`, 
-      {
+    try {
+      const res = await fetch(`${API_BASE}/api/posts/${postId}/comments`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
-          userId: CURRENT_USER.id,
-          authorName: CURRENT_USER.name,
-          avatarUrl: CURRENT_USER.avatarUrl,
+          userId: currentUser.id,
+          authorName: currentUser.name,
+          avatarUrl: currentUser.avatarUrl,
           text: trimmed
         })
       });
 
-      if (!res.ok) 
-      {
-        throw new Error('Failed to add comment');
+      const updatedPost = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(updatedPost?.message || 'Failed to add comment');
       }
 
-      const updatedPost = await res.json();
       setPosts((prev) =>
         prev.map((p) => (p._id === updatedPost._id ? updatedPost : p))
       );
-    } catch (err) 
-    {
+    } catch (err) {
       console.error(err);
-      setError('There was a problem adding your comment.');
+      setError(err.message || 'There was a problem adding your comment.');
     }
   }
 
-  async function handleDeleteComment(postId, commentId) 
-  {
-    try 
-    {
+  async function handleDeleteComment(postId, commentId) {
+    try {
       const res = await fetch(
         `${API_BASE}/api/posts/${postId}/comments/${commentId}`,
         {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: CURRENT_USER.id })
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ userId: currentUser.id })
         }
       );
 
-      if (!res.ok) 
-      {
-        throw new Error('Failed to delete comment');
+      const updatedPost = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(updatedPost?.message || 'Failed to delete comment');
       }
 
-      const updatedPost = await res.json();
       setPosts((prev) =>
         prev.map((p) => (p._id === updatedPost._id ? updatedPost : p))
       );
-    } catch (err) 
-    {
+    } catch (err) {
       console.error(err);
-      setError('There was a problem deleting your comment.');
+      setError(err.message || 'There was a problem deleting your comment.');
     }
   }
 
   //func to delete post and all of its comments 
-  async function handleDeletePost(postId) 
-  {
+  async function handleDeletePost(postId) {
     if (!window.confirm("Delete this post? This can't be undone.")) return;
-    try 
-    {
-      const res = await fetch(`${API_BASE}/api/posts/${postId}`, 
-      {
+    try {
+      const res = await fetch(`${API_BASE}/api/posts/${postId}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: CURRENT_USER.id })
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ userId: currentUser.id })
       });
+
+      const data = await res.json().catch(() => null);
+
       //if issue deleting post
-      if (!res.ok) 
-      {
-        throw new Error('Failed to delete post');
+      if (!res.ok) {
+        throw new Error(data?.message || 'Failed to delete post');
       }
 
       //remove post from local 
       setPosts((prev) => prev.filter((p) => p._id !== postId));
-    } catch (err) 
-    {
+    } catch (err) {
       console.error(err);
-      setError('There was a problem deleting your post.');
+      setError(err.message || 'There was a problem deleting your post.');
     }
   }
 
@@ -217,7 +235,7 @@ export default function Home() {
 
         <section className="feed">
           <div className="composer">
-            <img src={CURRENT_USER.avatarUrl} alt={CURRENT_USER.name} />
+            <img src={currentUser.avatarUrl} alt={currentUser.name} />
             <textarea
               rows="2"
               value={composerText}
@@ -266,7 +284,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                {post.userId === CURRENT_USER.id && (
+                {post.userId === currentUser.id && (
                   <button
                     className="post-delete-button"
                     onClick={() => handleDeletePost(post._id)}
@@ -290,7 +308,7 @@ export default function Home() {
                 {(post.comments || []).map((comment) => (
                   <div key={comment._id} className="comment">
                     <img
-                      src={comment.avatarUrl || CURRENT_USER.avatarUrl}
+                      src={comment.avatarUrl || currentUser.avatarUrl}
                       alt={comment.authorName}
                     />
                     <div>
@@ -309,7 +327,7 @@ export default function Home() {
                         >
                           {comment.authorName}
                         </span>
-                        {comment.userId === CURRENT_USER.id && (
+                        {comment.userId === currentUser.id && (
                           <button
                             onClick={() =>
                               handleDeleteComment(post._id, comment._id)
@@ -332,6 +350,7 @@ export default function Home() {
                 ))}
 
                 <CommentInput
+                  currentUser={currentUser}
                   onSend={(text) => handleAddComment(post._id, text)}
                 />
               </div>
@@ -370,7 +389,7 @@ export default function Home() {
   );
 }
 
-function CommentInput({ onSend }) {
+function CommentInput({ onSend, currentUser }) {
   const [text, setText] = useState('');
 
   function handleKeyDown(e) {
@@ -384,7 +403,7 @@ function CommentInput({ onSend }) {
 
   return (
     <div className="comment-input">
-      <img src={CURRENT_USER.avatarUrl} alt="You" />
+      <img src={currentUser.avatarUrl} alt={currentUser.name} />
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}

@@ -10,34 +10,74 @@
     }
 
     /* HEADER */
-    header {
+
+    .top-nav {
       background-color: #21334c;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0.75rem 2rem;
-    }
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
 
-    .logo img {
-      height: 45px;
-      
-    }
-
-    .nav-links {
+    .logo 
+    {
       display: flex;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #ffffff;
+    }
+
+/* white text for Comm + nityConnect */
+.logo-text 
+  {
+      letter-spacing: 0.02em;
+  }
+
+/* green block just behind the U */
+.logo-square 
+  {
+      background-color: #8ac26a;   /* green block */
+      color: #ffffff;              /* white "U" */
+      padding: 0.1rem 0.45rem;
+      border-radius: 2px;
+      margin: 0 0.25rem;
+      font-weight: 800;
+  }
+
+/* container for Settings / Theme / Log Out */
+.header-right 
+  {
+      display: flex;
+      align-items: center;
       gap: 1.5rem;
-    }
+  }
 
-    .nav-links a {
-      color: rgb(255, 255, 255);
+/* header links: white by default, green on hover */
+.header-link 
+  {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: #ffffff;
       text-decoration: none;
-      font-weight: bold;
-      transition: opacity 0.3s;
-    }
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s ease, opacity 0.2s ease;
+  }
 
-    .nav-links a:hover {
-      opacity: 0.8;
-    }
+.header-link i 
+  {
+      font-size: 0.9rem;
+  }
+
+.header-link:hover 
+  {
+      color: #6ef1a5;
+      opacity: 0.9;
+  }
 
 
      /* LEFT SIDEBAR */

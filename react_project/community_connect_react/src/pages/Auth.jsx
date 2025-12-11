@@ -12,6 +12,8 @@ export default function AuthPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  //to help user stay logged in on their browser
+  const [rememberMe, setRememberMe] = useState(true);
   //in case any errors happen
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -45,12 +47,17 @@ export default function AuthPage() {
         body: JSON.stringify(body),
       });
       //handles response from db
-      const data = await res.json();
+      const data = await res.json().catch(() => null);
       //edge case if we get an error from db 
       if (!res.ok) 
       {
-        throw new Error(data.message || "Something went wrong");
+        throw new Error(data.message || "Authentication failed");
       }
+      //storing information about the user 
+      const storage = rememberMe ? window.localStorage : window.sessionStorage;
+
+      storage.setItem("cc_token", data.token);
+      storage.setItem("cc_user", JSON.stringify(data.user));
 
       //save the user and token in the localStorage and user is logged in
       localStorage.setItem("cc_token", data.token);
@@ -100,9 +107,16 @@ export default function AuthPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          {error && (
-            <p style={{ color: "red", fontSize: 14, marginTop: 4 }}>{error}</p>
-          )}
+          <label className="auth-remember">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            Stay signed in on this device
+          </label>
+
+          {error && <p className="auth-error">{error}</p>}
 
           <button type="submit" className="auth-login-btn" disabled={loading}>
             {loading
