@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 
-const API_BASE = "http://localhost:5000"; //express server
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"; //connections
 
 // Temporary current user info.
 // TODO: once auth is wired up, replace this with real logged-in user data.
