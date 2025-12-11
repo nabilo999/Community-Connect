@@ -57,7 +57,7 @@ export default function AuthPage() {
       localStorage.setItem("cc_user", JSON.stringify(data.user));
 
       //take user to the home feed
-      navigate("/");
+      navigate("/home");
     } catch (err) 
     {
       setError(err.message);
