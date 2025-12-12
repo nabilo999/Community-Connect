@@ -10,7 +10,8 @@ bio WIP
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    email: {
+    email: 
+    {
       type: String,
       required: true,
       unique: true,
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema(
     passwordHash: { type: String, required: true },
     avatarUrl: { type: String, default: "" },
     bio: { type: String, default: "" },
+    joinedGroups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
   },
   { timestamps: true }
 );

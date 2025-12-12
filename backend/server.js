@@ -2,9 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
 const userRoutes = require("./routes/users");
+const groupRoutes = require("./routes/groups");
+const groupEventsRoutes = require("./routes/groupEvents");
 
 const app = express();
 
@@ -31,6 +34,8 @@ app.use(express.json({limit: "10mb"}));
 app.use('/api/auth', authRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/groups", groupRoutes);
+app.use("/api/groups/:groupId/events", groupEventsRoutes);
 
 //making sure our API is working good
 app.get('/', (req, res) => {
