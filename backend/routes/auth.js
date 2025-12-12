@@ -49,7 +49,7 @@ router.post('/register', async (req, res) =>
     //case for it server fails
     res.status(201).json({
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: user._id, name: user.name, email: user.email, avatarUrl: user.avatarUrl, bio: user.bio }
     });
   } catch (err) 
   {
@@ -85,7 +85,7 @@ router.post('/login', async (req, res) =>
     //edge case for if the user is created but server fails
     res.json({
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+       user: { id: user._id, name: user.name, email: user.email, avatarUrl: user.avatarUrl, bio: user.bio }
     });
   } catch (err) 
   {
