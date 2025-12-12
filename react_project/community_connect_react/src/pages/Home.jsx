@@ -9,7 +9,7 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000"; /
 const DEFAULT_USER = {
   id: "demo-user-1",
   name: "You",
-  avatarUrl: "../../assets/pfp_1.png"
+  avatarUrl: "/assets/pfp_1.png"
 };
 
 // helper: load current user from localStorage
@@ -17,6 +17,7 @@ function loadCurrentUser() {
   try {
     const raw = window.localStorage.getItem("cc_user");
     if (!raw) return DEFAULT_USER;
+
     const user = JSON.parse(raw);
     return {
       id: user.id || DEFAULT_USER.id,
@@ -34,13 +35,15 @@ function getAuthHeaders() {
   const headers = { "Content-Type": "application/json" };
   try {
     const token = window.localStorage.getItem("cc_token");
-    if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
+    if (token) headers["Authorization"] = `Bearer ${token}`;
   } catch (e) {
     console.error("Failed to read cc_token from localStorage", e);
   }
   return headers;
+}
+
+function safeAvatar(src, fallback = "/assets/pfp_2.png") {
+  return src && typeof src === "string" && src.trim() ? src : fallback;
 }
 
 export default function Home() {
@@ -57,6 +60,25 @@ export default function Home() {
   // load user once from localStorage when component mounts
   useEffect(() => {
     setCurrentUser(loadCurrentUser());
+  }, []);
+
+  // NEW: refresh user when Profile saves changes (or localStorage changes)
+  useEffect(() => {
+    function refreshUser() {
+      setCurrentUser(loadCurrentUser());
+    }
+
+    function onStorage(e) {
+      if (e.key === "cc_user") refreshUser();
+    }
+
+    window.addEventListener("cc_user_updated", refreshUser);
+    window.addEventListener("storage", onStorage);
+
+    return () => {
+      window.removeEventListener("cc_user_updated", refreshUser);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
 
   //load all the posts from the backend
@@ -202,7 +224,7 @@ export default function Home() {
     }
   }
 
-  //func to delete post and all of its comments 
+  //func to delete post and all of its comments
   async function handleDeletePost(postId) {
     if (!window.confirm("Delete this post? This can't be undone.")) return;
     try {
@@ -219,7 +241,7 @@ export default function Home() {
         throw new Error(data?.message || 'Failed to delete post');
       }
 
-      //remove post from local 
+      //remove post from local
       setPosts((prev) => prev.filter((p) => p._id !== postId));
     } catch (err) {
       console.error(err);
@@ -235,7 +257,10 @@ export default function Home() {
 
         <section className="feed">
           <div className="composer">
-            <img src={currentUser.avatarUrl} alt={currentUser.name} />
+            <img
+              src={safeAvatar(currentUser.avatarUrl, DEFAULT_USER.avatarUrl)}
+              alt={currentUser.name}
+            />
             <textarea
               rows="2"
               value={composerText}
@@ -269,7 +294,7 @@ export default function Home() {
               <div className="post-header">
                 <div className="post-header-left">
                   <img
-                    src={post.avatarUrl || '../../assets/pfp_2.png'}
+                    src={safeAvatar(post.avatarUrl, "/assets/pfp_2.png")}
                     alt={post.authorName}
                   />
                   <div>
@@ -308,7 +333,7 @@ export default function Home() {
                 {(post.comments || []).map((comment) => (
                   <div key={comment._id} className="comment">
                     <img
-                      src={comment.avatarUrl || currentUser.avatarUrl}
+                      src={safeAvatar(comment.avatarUrl, "/assets/pfp_2.png")}
                       alt={comment.authorName}
                     />
                     <div>
@@ -403,7 +428,10 @@ function CommentInput({ onSend, currentUser }) {
 
   return (
     <div className="comment-input">
-      <img src={currentUser.avatarUrl} alt={currentUser.name} />
+      <img
+        src={safeAvatar(currentUser.avatarUrl, "/assets/pfp_1.png")}
+        alt={currentUser.name}
+      />
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
