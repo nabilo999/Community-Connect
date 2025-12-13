@@ -107,15 +107,21 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  //function to handle image changes - supports multiple images
+  //function to handle image changes - supports up to 4 images
   function handleImageChange(e) {
     const files = e.target.files;
     if (!files) return;
 
     Array.from(files).forEach((file) => {
+      // Limit to 4 images total
+      if (imageData.length >= 4) return;
+      
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageData((prev) => [...prev, reader.result]);
+        setImageData((prev) => {
+          if (prev.length >= 4) return prev;
+          return [...prev, reader.result];
+        });
       };
       reader.readAsDataURL(file);
     });
@@ -335,12 +341,17 @@ export default function Home() {
 
               <p>{post.description}</p>
 
-              {post.image && (
-                <img
-                  src={post.image}
-                  alt="Post attachment"
-                  className="post-image"
-                />
+              {(post.images && post.images.length > 0) && (
+                <div className={`post-images post-images-${post.images.length}`}>
+                  {post.images.map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img}
+                      alt={`Post image ${idx + 1}`}
+                      className="post-image"
+                    />
+                  ))}
+                </div>
               )}
 
               <div className="comment-section">

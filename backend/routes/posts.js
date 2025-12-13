@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
       description,
       eventTime,
       location,
-      image,
+      images,
     } = req.body;
 
     if (!userId || !authorName || !description) 
@@ -44,7 +44,7 @@ router.post('/', async (req, res) => {
       description,
       eventTime: eventTime || '',
       location: location || '',
-      image: image || '',
+      images: Array.isArray(images) ? images : [],
     });
 
     res.status(201).json(post);

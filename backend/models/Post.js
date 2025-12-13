@@ -23,8 +23,8 @@ const postSchema = new mongoose.Schema(
     eventTime: { type: String, default: "" }, // store as ISO/datetime-local string
     location: { type: String, default: "" },
 
-    //this will hold the image for the post (not necessary)
-    image: { type: String, default: "" },
+    //this will hold the images for the post (not necessary) - now supports multiple images
+    images: [{ type: String }],
 
     //there will be a seperate schema for comments
     comments: [commentSchema]
