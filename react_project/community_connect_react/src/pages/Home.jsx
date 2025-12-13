@@ -52,7 +52,7 @@ export default function Home() {
   const [composerText, setComposerText] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [location, setLocation] = useState('');
-  const [imageData, setImageData] = useState(null);
+  const [imageData, setImageData] = useState([]);
   const [loadingPost, setLoadingPost] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [error, setError] = useState('');
@@ -107,16 +107,18 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  //function to handle image changes
+  //function to handle image changes - supports multiple images
   function handleImageChange(e) {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImageData(reader.result);
-    };
-    reader.readAsDataURL(file);
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageData((prev) => [...prev, reader.result]);
+      };
+      reader.readAsDataURL(file);
+    });
   }
 
   async function handleCreatePost() {
@@ -130,14 +132,17 @@ export default function Home() {
     setError('');
 
     try {
+      // use the current time as the event/post time
+      const now = new Date().toISOString();
+
       const body = {
         userId: currentUser.id,
         authorName: currentUser.name,
         avatarUrl: currentUser.avatarUrl,
         description: text,
-        eventTime,
+        eventTime: now,
         location,
-        image: imageData
+        images: imageData
       };
 
       const res = await fetch(`${API_BASE}/api/posts`, {
@@ -156,9 +161,8 @@ export default function Home() {
 
       //reset composer
       setComposerText('');
-      setEventTime('');
       setLocation('');
-      setImageData(null);
+      setImageData([]);
     } catch (err) {
       console.error(err);
       setError(err.message || 'There was a problem creating your post.');
@@ -257,29 +261,39 @@ export default function Home() {
 
         <section className="feed">
           <div className="composer">
-            <img
-              src={safeAvatar(currentUser.avatarUrl, DEFAULT_USER.avatarUrl)}
-              alt={currentUser.name}
-            />
-            <textarea
-              rows="2"
-              value={composerText}
-              onChange={(e) => setComposerText(e.target.value)}
-              placeholder="Share an update..."
-            />
-            <div className="buttons">
-              <input
-                type="datetime-local"
-                value={eventTime}
-                onChange={(e) => setEventTime(e.target.value)}
+            <div className="composer-top">
+              <img
+                src={safeAvatar(currentUser.avatarUrl, DEFAULT_USER.avatarUrl)}
+                alt={currentUser.name}
               />
-              <input
-                type="text"
-                placeholder="Location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
+              <textarea
+                rows="2"
+                value={composerText}
+                onChange={(e) => setComposerText(e.target.value)}
+                placeholder="Share an update..."
               />
-              <input type="file" accept="image/*" onChange={handleImageChange} />
+            </div>
+            {imageData.length > 0 && (
+              <div className="composer-image-preview">
+                {imageData.map((img, idx) => (
+                  <div key={idx} className="preview-item">
+                    <img src={img} alt={`Preview ${idx}`} />
+                    <button
+                      type="button"
+                      className="remove-image-btn"
+                      onClick={() => setImageData((prev) => prev.filter((_, i) => i !== idx))}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="composer-bottom">
+              <label className="file-input-label">
+                <input type="file" accept="image/*" onChange={handleImageChange} className="file-input" />
+                <span className="plus-icon">+</span>
+              </label>
               <button onClick={handleCreatePost} disabled={loadingPost}>
                 {loadingPost ? 'Posting...' : 'Post'}
               </button>
