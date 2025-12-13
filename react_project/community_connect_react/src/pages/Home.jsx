@@ -410,7 +410,7 @@ export default function Home() {
 
         <aside className="right-sidebar">
           <div className="card">
-            <h3>Recent Events</h3>
+            <h3>testing state</h3>
             <div className="event">
               <div className="event-info">
                 <h4>Neighborhood Cleanup</h4>
