@@ -107,28 +107,60 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  //function to handle image changes - supports up to 4 images
+  //function to handle image changes - supports up to 4 images with compression
   function handleImageChange(e) {
     const files = e.target.files;
     if (!files) return;
 
-    const fileArray = Array.from(files);
-    
-    Promise.all(
-      fileArray.map((file) => {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            resolve(reader.result);
-          };
-          reader.readAsDataURL(file);
-        });
-      })
-    ).then((results) => {
+    Array.from(files).forEach((file) => {
+      // Limit to 4 images total
       setImageData((prev) => {
-        const combined = [...prev, ...results];
-        // Limit to 4 images total
-        return combined.slice(0, 4);
+        if (prev.length >= 4) {
+          alert('Maximum 4 images allowed');
+          return prev;
+        }
+
+        // Compress image before adding
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const img = new Image();
+          img.onload = () => {
+            // Create canvas and compress
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const maxWidth = 1200;
+            const maxHeight = 1200;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxWidth) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              }
+            } else {
+              if (height > maxHeight) {
+                width = Math.round((width * maxHeight) / height);
+                height = maxHeight;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Compress to JPEG with 0.7 quality
+            const compressed = canvas.toDataURL('image/jpeg', 0.7);
+            
+            setImageData((current) => {
+              if (current.length >= 4) return current;
+              return [...current, compressed];
+            });
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+        return prev;
       });
     });
   }
@@ -157,6 +189,8 @@ export default function Home() {
         images: imageData
       };
 
+      console.log(`Posting with ${imageData.length} images...`);
+      
       const res = await fetch(`${API_BASE}/api/posts`, {
         method: 'POST',
         headers: getAuthHeaders(),
@@ -166,6 +200,7 @@ export default function Home() {
       const newPost = await res.json().catch(() => null);
 
       if (!res.ok) {
+        console.error('Post creation failed:', newPost);
         throw new Error(newPost?.message || 'Failed to create post');
       }
 
