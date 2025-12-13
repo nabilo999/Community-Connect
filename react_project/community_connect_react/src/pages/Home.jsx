@@ -112,18 +112,24 @@ export default function Home() {
     const files = e.target.files;
     if (!files) return;
 
-    Array.from(files).forEach((file) => {
-      // Limit to 4 images total
-      if (imageData.length >= 4) return;
-      
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageData((prev) => {
-          if (prev.length >= 4) return prev;
-          return [...prev, reader.result];
+    const fileArray = Array.from(files);
+    
+    Promise.all(
+      fileArray.map((file) => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            resolve(reader.result);
+          };
+          reader.readAsDataURL(file);
         });
-      };
-      reader.readAsDataURL(file);
+      })
+    ).then((results) => {
+      setImageData((prev) => {
+        const combined = [...prev, ...results];
+        // Limit to 4 images total
+        return combined.slice(0, 4);
+      });
     });
   }
 
