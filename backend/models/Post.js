@@ -26,6 +26,10 @@ const postSchema = new mongoose.Schema(
     //this will hold the images for the post (not necessary) - now supports multiple images
     images: [{ type: String }],
 
+    // optional group association
+    groupId: { type: String, default: "" },
+    groupName: { type: String, default: "" },
+
     //there will be a seperate schema for comments
     comments: [commentSchema]
   },

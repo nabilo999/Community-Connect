@@ -1,5 +1,6 @@
 const express = require('express');
 const Post = require('../models/Post');
+const Group = require('../models/Group');
 
 const router = express.Router();
 
@@ -29,12 +30,25 @@ router.post('/', async (req, res) => {
       eventTime,
       location,
       images,
+      groupId,
     } = req.body;
 
     if (!userId || !authorName || !description) 
     {
       return res.status(400).json({ message: 'Missing required fields.' });
     }
+    // Determine groupName if groupId provided
+    let groupName = "";
+    if (groupId) {
+      try {
+        const g = await Group.findById(groupId).select('name');
+        if (g) groupName = g.name || "";
+      } catch (e) {
+        // ignore lookup errors and continue without groupName
+        console.warn('Group lookup failed for post creation', e);
+      }
+    }
+
     //post will have elements filled out by user
     const post = await Post.create(
     {
@@ -45,6 +59,8 @@ router.post('/', async (req, res) => {
       eventTime: eventTime || '',
       location: location || '',
       images: Array.isArray(images) ? images : [],
+      groupId: groupId || '',
+      groupName,
     });
 
     res.status(201).json(post);

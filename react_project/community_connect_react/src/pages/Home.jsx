@@ -49,6 +49,8 @@ function safeAvatar(src, fallback = "/assets/pfp_2.png") {
 export default function Home() {
   const [currentUser, setCurrentUser] = useState(DEFAULT_USER);
   const [posts, setPosts] = useState([]);
+  const [joinedGroups, setJoinedGroups] = useState([]);
+  const [selectedGroupId, setSelectedGroupId] = useState("");
   const [composerText, setComposerText] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [location, setLocation] = useState('');
@@ -105,6 +107,30 @@ export default function Home() {
     }
 
     fetchPosts();
+  }, []);
+
+  // load joined groups for current user
+  useEffect(() => {
+    async function fetchJoinedGroups() {
+      try {
+        const res = await fetch(`${API_BASE}/api/groups/mine`, {
+          headers: getAuthHeaders()
+        });
+        const data = await res.json().catch(() => null);
+        if (!res.ok) {
+          console.warn('Failed to fetch joined groups', data);
+          setJoinedGroups([]);
+          return;
+        }
+        setJoinedGroups(data || []);
+        if ((data || []).length > 0) setSelectedGroupId(String((data || [])[0]._id));
+      } catch (err) {
+        console.error('Error loading joined groups', err);
+        setJoinedGroups([]);
+      }
+    }
+
+    fetchJoinedGroups();
   }, []);
 
   //function to handle image changes - supports up to 4 images with compression
@@ -187,6 +213,8 @@ export default function Home() {
         eventTime: now,
         location,
         images: imageData
+        ,
+        groupId: selectedGroupId || undefined
       };
 
       console.log(`Posting with ${imageData.length} images...`);
@@ -320,6 +348,17 @@ export default function Home() {
                 placeholder="Share an update..."
               />
             </div>
+            {joinedGroups.length > 0 && (
+              <div style={{ marginTop: '0.5rem' }}>
+                <label style={{ fontSize: '0.85rem', color: '#555', marginRight: '0.5rem' }}>Post to:</label>
+                <select value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
+                  <option value="">(Your profile)</option>
+                  {joinedGroups.map((g) => (
+                    <option key={g._id} value={g._id}>{g.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
             {imageData.length > 0 && (
               <div className="composer-image-preview">
                 {imageData.map((img, idx) => (
@@ -366,6 +405,9 @@ export default function Home() {
                         {post.eventTime && post.location && ' • '}
                         {post.location}
                       </p>
+                    )}
+                    {post.groupName && (
+                      <p style={{ fontSize: '0.8rem', color: '#777', marginTop: '0.15rem' }}>{post.groupName}</p>
                     )}
                   </div>
                 </div>

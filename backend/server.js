@@ -28,7 +28,8 @@ app.use(
 );
 
 //middleware for connecting to db 
-app.use(express.json({limit: "10mb"}));
+app.use(express.json({limit: "50mb"}));
+app.use(express.urlencoded({limit: "50mb", extended: true}));
 
 //routes used for authentication
 app.use('/api/auth', authRoutes);
