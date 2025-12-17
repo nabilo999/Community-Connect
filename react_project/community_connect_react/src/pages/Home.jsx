@@ -49,8 +49,6 @@ function safeAvatar(src, fallback = "/assets/pfp_2.png") {
 export default function Home() {
   const [currentUser, setCurrentUser] = useState(DEFAULT_USER);
   const [posts, setPosts] = useState([]);
-  const [joinedGroups, setJoinedGroups] = useState([]);
-  const [selectedGroupId, setSelectedGroupId] = useState("");
   const [composerText, setComposerText] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [location, setLocation] = useState('');
@@ -58,6 +56,8 @@ export default function Home() {
   const [loadingPost, setLoadingPost] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [error, setError] = useState('');
+  const [groups, setGroups] = useState([]);
+  const [selectedGroupId, setSelectedGroupId] = useState('');
 
   // load user once from localStorage when component mounts
   useEffect(() => {
@@ -109,28 +109,23 @@ export default function Home() {
     fetchPosts();
   }, []);
 
-  // load joined groups for current user
+  // load groups the user has joined
   useEffect(() => {
-    async function fetchJoinedGroups() {
+    async function fetchGroups() {
       try {
-        const res = await fetch(`${API_BASE}/api/groups/mine`, {
-          headers: getAuthHeaders()
-        });
+        const res = await fetch(`${API_BASE}/api/groups/mine`, { headers: getAuthHeaders() });
         const data = await res.json().catch(() => null);
         if (!res.ok) {
-          console.warn('Failed to fetch joined groups', data);
-          setJoinedGroups([]);
+          console.warn('Failed to fetch joined groups', data?.message);
           return;
         }
-        setJoinedGroups(data || []);
-        if ((data || []).length > 0) setSelectedGroupId(String((data || [])[0]._id));
+        setGroups(data || []);
       } catch (err) {
-        console.error('Error loading joined groups', err);
-        setJoinedGroups([]);
+        console.error('Error fetching joined groups', err);
       }
     }
 
-    fetchJoinedGroups();
+    fetchGroups();
   }, []);
 
   //function to handle image changes - supports up to 4 images with compression
@@ -212,9 +207,8 @@ export default function Home() {
         description: text,
         eventTime: now,
         location,
-        images: imageData
-        ,
-        groupId: selectedGroupId || undefined
+        images: imageData,
+        groupId: selectedGroupId || null
       };
 
       console.log(`Posting with ${imageData.length} images...`);
@@ -230,6 +224,12 @@ export default function Home() {
       if (!res.ok) {
         console.error('Post creation failed:', newPost);
         throw new Error(newPost?.message || 'Failed to create post');
+      }
+
+      // if backend didn't return groupName, fill from local groups cache
+      if (!newPost.groupName && selectedGroupId) {
+        const g = groups.find((x) => String(x._id) === String(selectedGroupId));
+        if (g) newPost.groupName = g.name;
       }
 
       setPosts((prev) => [newPost, ...prev]);
@@ -348,17 +348,6 @@ export default function Home() {
                 placeholder="Share an update..."
               />
             </div>
-            {joinedGroups.length > 0 && (
-              <div style={{ marginTop: '0.5rem' }}>
-                <label style={{ fontSize: '0.85rem', color: '#555', marginRight: '0.5rem' }}>Post to:</label>
-                <select value={selectedGroupId} onChange={(e) => setSelectedGroupId(e.target.value)}>
-                  <option value="">(Your profile)</option>
-                  {joinedGroups.map((g) => (
-                    <option key={g._id} value={g._id}>{g.name}</option>
-                  ))}
-                </select>
-              </div>
-            )}
             {imageData.length > 0 && (
               <div className="composer-image-preview">
                 {imageData.map((img, idx) => (
@@ -376,6 +365,18 @@ export default function Home() {
               </div>
             )}
             <div className="composer-bottom">
+              <select
+                className="group-select"
+                value={selectedGroupId}
+                onChange={(e) => setSelectedGroupId(e.target.value)}
+                aria-label="Select group to post to"
+                style={{ marginRight: 'auto' }}
+              >
+                <option value="">Post to (no group)</option>
+                {groups.map((g) => (
+                  <option key={g._id} value={g._id}>{g.name}</option>
+                ))}
+              </select>
               <label className="file-input-label">
                 <input type="file" accept="image/*" onChange={handleImageChange} className="file-input" />
                 <span className="plus-icon">+</span>
@@ -407,7 +408,7 @@ export default function Home() {
                       </p>
                     )}
                     {post.groupName && (
-                      <p style={{ fontSize: '0.8rem', color: '#777', marginTop: '0.15rem' }}>{post.groupName}</p>
+                      <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.25rem' }}>{post.groupName}</p>
                     )}
                   </div>
                 </div>

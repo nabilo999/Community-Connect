@@ -164,6 +164,15 @@
       gap: 0.5rem;
     }
 
+    .composer .group-select {
+      margin-right: auto;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      font-size: 0.9rem;
+    }
+
     .composer .buttons {
       display: flex;
       flex-direction: column;
