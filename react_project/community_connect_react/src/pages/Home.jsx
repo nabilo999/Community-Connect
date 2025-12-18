@@ -58,6 +58,9 @@ export default function Home() {
   const [error, setError] = useState('');
   const [groups, setGroups] = useState([]);
   const [selectedGroupId, setSelectedGroupId] = useState('');
+  const [joinedEvents, setJoinedEvents] = useState([]);
+  const [joinableEvents, setJoinableEvents] = useState([]);
+  const [loadingEvents, setLoadingEvents] = useState(false);
 
   // load user once from localStorage when component mounts
   useEffect(() => {
@@ -126,6 +129,35 @@ export default function Home() {
     }
 
     fetchGroups();
+  }, []);
+
+  // load joined and joinable events
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        setLoadingEvents(true);
+        
+        // Fetch joined events
+        const joinedRes = await fetch(`${API_BASE}/api/events/mine`, { headers: getAuthHeaders() });
+        const joinedData = await joinedRes.json().catch(() => null);
+        if (joinedRes.ok) {
+          setJoinedEvents(joinedData || []);
+        }
+
+        // Fetch joinable events
+        const joinableRes = await fetch(`${API_BASE}/api/events/joinable`, { headers: getAuthHeaders() });
+        const joinableData = await joinableRes.json().catch(() => null);
+        if (joinableRes.ok) {
+          setJoinableEvents(joinableData || []);
+        }
+      } catch (err) {
+        console.error('Error fetching events', err);
+      } finally {
+        setLoadingEvents(false);
+      }
+    }
+
+    fetchEvents();
   }, []);
 
   //function to handle image changes - supports up to 4 images with compression
@@ -328,6 +360,28 @@ export default function Home() {
     }
   }
 
+  async function handleRSVP(eventId) {
+    try {
+      const res = await fetch(`${API_BASE}/api/events/${eventId}/join`, {
+        method: 'POST',
+        headers: getAuthHeaders()
+      });
+
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        throw new Error(data?.message || 'Failed to RSVP to event');
+      }
+
+      // Remove from joinable and add to joined
+      setJoinableEvents((prev) => prev.filter((e) => e._id !== eventId));
+      setJoinedEvents((prev) => [data, ...prev]);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'There was a problem RSVPing to the event.');
+    }
+  }
+
   return (
     <>
       <Header />
@@ -494,28 +548,52 @@ export default function Home() {
 
         <aside className="right-sidebar">
           <div className="card">
-            <h3>testing state</h3>
-            <div className="event">
-              <div className="event-info">
-                <h4>Neighborhood Cleanup</h4>
-                <p>Oct 30, 2025</p>
+            <h3>Your Events</h3>
+            {loadingEvents && <p style={{ color: '#666', fontSize: '0.9rem' }}>Loading events...</p>}
+            {!loadingEvents && joinedEvents.length === 0 && (
+              <p style={{ color: '#666', fontSize: '0.9rem' }}>No events joined yet.</p>
+            )}
+            {!loadingEvents && joinedEvents.map((event) => (
+              <div key={event._id} className="event">
+                <div className="event-info">
+                  <h4>{event.title}</h4>
+                  <p>
+                    {event.eventTime ? formatEventTime(event.eventTime) : 'No date set'}
+                    {event.location && ` • ${event.location}`}
+                  </p>
+                  {event.groupName && (
+                    <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.25rem' }}>
+                      {event.groupName}
+                    </p>
+                  )}
+                </div>
               </div>
-              <button>RSVP</button>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <h4>Food Drive</h4>
-                <p>Nov 3, 2025</p>
+            ))}
+          </div>
+
+          <div className="card" style={{ marginTop: '1.5rem' }}>
+            <h3>Upcoming Events</h3>
+            {loadingEvents && <p style={{ color: '#666', fontSize: '0.9rem' }}>Loading events...</p>}
+            {!loadingEvents && joinableEvents.length === 0 && (
+              <p style={{ color: '#666', fontSize: '0.9rem' }}>No upcoming events available.</p>
+            )}
+            {!loadingEvents && joinableEvents.map((event) => (
+              <div key={event._id} className="event">
+                <div className="event-info">
+                  <h4>{event.title}</h4>
+                  <p>
+                    {event.eventTime ? formatEventTime(event.eventTime) : 'No date set'}
+                    {event.location && ` • ${event.location}`}
+                  </p>
+                  {event.groupName && (
+                    <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.25rem' }}>
+                      {event.groupName}
+                    </p>
+                  )}
+                </div>
+                <button onClick={() => handleRSVP(event._id)}>RSVP</button>
               </div>
-              <button>RSVP</button>
-            </div>
-            <div className="event">
-              <div className="event-info">
-                <h4>Holiday Meetup</h4>
-                <p>Dec 10, 2025</p>
-              </div>
-              <button>RSVP</button>
-            </div>
+            ))}
           </div>
         </aside>
       </main>
