@@ -514,6 +514,140 @@
       background-color: #0074e8;
     }
 
+    /* NEW EVENT CARD LAYOUT */
+    .event-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .event-card-content {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .event-card-image {
+      flex-shrink: 0;
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .event-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .event-card-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .event-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .event-card-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .event-description {
+      color: #333;
+      margin: 0;
+      margin-bottom: 0.5rem;
+      word-wrap: break-word;
+    }
+
+    .event-group-name {
+      font-size: 0.85rem;
+      color: #666;
+      margin: 0;
+    }
+
+    .event-card-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .event-date {
+      font-size: 0.85rem;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .event-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+
+    .event-rsvp-button {
+      background-color: #4cab74;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .event-rsvp-button:hover {
+      background-color: #0074e8;
+    }
+
+    .event-rsvp-status {
+      color: #4cab74;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .event-delete-button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: background-color 0.3s;
+    }
+
+    .event-delete-button:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Dark mode for event cards */
+    .dark-mode .event-card {
+      background: #1e1e1e;
+      box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
+    }
+
+    .dark-mode .event-description {
+      color: #d6d6d6;
+    }
+
+    .dark-mode .event-group-name,
+    .dark-mode .event-date {
+      color: #999;
+    }
+
     /* GROUPS CARD */
     .group-grid {
       display: grid;
