@@ -37,15 +37,15 @@ router.post('/', async (req, res) => {
     {
       return res.status(400).json({ message: 'Missing required fields.' });
     }
-    // Determine groupName if groupId provided
-    let groupName = "";
+    // Determine groupName if a groupId was provided
+    let groupName = '';
     if (groupId) {
       try {
         const g = await Group.findById(groupId).select('name');
-        if (g) groupName = g.name || "";
+        if (g) groupName = g.name || '';
       } catch (e) {
-        // ignore lookup errors and continue without groupName
-        console.warn('Group lookup failed for post creation', e);
+        // ignore lookup errors, allow post creation without groupName
+        console.error('Failed to lookup group for post creation', e);
       }
     }
 
@@ -59,8 +59,8 @@ router.post('/', async (req, res) => {
       eventTime: eventTime || '',
       location: location || '',
       images: Array.isArray(images) ? images : [],
-      groupId: groupId || '',
-      groupName,
+      groupId: groupId || null,
+      groupName: groupName || ''
     });
 
     res.status(201).json(post);

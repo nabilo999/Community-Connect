@@ -281,17 +281,25 @@ export default function Events() {
 
   async function handleRSVP(eventId) {
     try {
+      console.log("RSVP attempt for event:", eventId);
       const res = await fetch(`${API_BASE}/api/events/${eventId}/join`, {
         method: "POST",
         headers: getAuthHeaders(),
       });
 
       const data = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(data?.message || "Failed to RSVP to event");
+      console.log("RSVP response:", res.status, data);
+      
+      if (!res.ok) {
+        const errorMsg = data?.message || `Failed to RSVP to event (${res.status})`;
+        console.error("RSVP error:", errorMsg, data);
+        throw new Error(errorMsg);
+      }
 
       setJoinedEventIds((prev) => [...prev, String(eventId)]);
+      setError(""); // Clear any previous errors
     } catch (err) {
-      console.error(err);
+      console.error("RSVP error details:", err);
       setError(err.message || "There was a problem RSVPing to the event.");
     }
   }

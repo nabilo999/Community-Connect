@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema(
     avatarUrl: { type: String, default: "" },
     bio: { type: String, default: "" },
     joinedGroups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
+    joinedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
   },
   { timestamps: true }
 );
