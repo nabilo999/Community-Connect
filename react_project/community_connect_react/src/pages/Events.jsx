@@ -304,6 +304,28 @@ export default function Events() {
     }
   }
 
+  async function handleOptOut(eventId) {
+    try {
+      const res = await fetch(`${API_BASE}/api/events/${eventId}/leave`, {
+        method: "POST",
+        headers: getAuthHeaders(),
+      });
+
+      const data = await res.json().catch(() => null);
+      
+      if (!res.ok) {
+        const errorMsg = data?.message || `Failed to opt out of event (${res.status})`;
+        throw new Error(errorMsg);
+      }
+
+      setJoinedEventIds((prev) => prev.filter((id) => id !== String(eventId)));
+      setError(""); // Clear any previous errors
+    } catch (err) {
+      console.error("Opt out error details:", err);
+      setError(err.message || "There was a problem opting out of the event.");
+    }
+  }
+
   async function deleteEvent(ev) {
     if (!window.confirm("Delete this event?")) return;
 
@@ -508,7 +530,12 @@ export default function Events() {
                             </button>
                           )}
                           {isJoined && (
-                            <span className="event-rsvp-status">Joined</span>
+                            <button
+                              className="event-optout-button"
+                              onClick={() => handleOptOut(ev._id)}
+                            >
+                              Opt out
+                            </button>
                           )}
                           {String(ev.userId) === String(currentUser.id) && (
                             <button

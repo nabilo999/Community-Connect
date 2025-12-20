@@ -618,6 +618,22 @@
       font-size: 0.9rem;
     }
 
+    .event-optout-button {
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    .event-optout-button:hover {
+      background-color: #f57c00;
+    }
+
     .event-delete-button {
       background-color: #f44336;
       color: white;
@@ -646,6 +662,14 @@
     .dark-mode .event-group-name,
     .dark-mode .event-date {
       color: #999;
+    }
+
+    .dark-mode .event-optout-button {
+      background-color: #ff9800;
+    }
+
+    .dark-mode .event-optout-button:hover {
+      background-color: #f57c00;
     }
 
     /* GROUPS CARD */
