@@ -14,8 +14,8 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  //to help user stay logged in on their browser default will be set off
-  const [rememberMe, setRememberMe] = useState(false);
+  //to help user stay logged in on their browser default will be set on
+  const [rememberMe, setRememberMe] = useState(true);
 
   //in case any errors happen
   const [error, setError] = useState("");
