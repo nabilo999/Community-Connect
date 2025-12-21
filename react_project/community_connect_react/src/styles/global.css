@@ -1328,3 +1328,16 @@ main .card:hover
   flex: 0 0 auto;
   white-space: nowrap;
 }
+
+/* fixing the coloring in dark mode for upcoming events*/
+.dark-mode .right-sidebar .card > h3 
+{
+  color: #66d18d; 
+}
+
+/* fixing dark mode for groups to green*/
+.dark-mode .groups-two-col .card > h3,
+.dark-mode .create-group-card > h3 
+{
+  color: #66d18d; 
+}

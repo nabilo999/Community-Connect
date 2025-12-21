@@ -40,7 +40,7 @@ const Header = () => {
         </Link>
 
         <a onClick={toggleTheme} className="header-link theme-toggle" aria-label="Toggle theme">
-          <i className={`fa-solid ${dark ? "fa-sun" : "fa-moon"}`}></i>&nbsp; Theme
+          <i className="fa-solid fa-moon"></i>&nbsp; Theme
         </a>
 
         <a href="#" onClick={handleLogout} className="header-link">

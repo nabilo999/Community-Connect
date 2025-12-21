@@ -254,7 +254,7 @@ export default function Groups() {
             </div>
           </div>
 
-          <div className="card" style={{ marginTop: "2rem" }}>
+          <div className="card create-group-card" style={{ marginTop: "2rem" }}>
             <h3>Create a Group</h3>
 
             <div className="composer group-create-composer" style={{ marginTop: "1rem" }}>
