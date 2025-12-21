@@ -349,59 +349,6 @@ export default function Events() {
     }
   }
 
-  async function addComment(ev, text) {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-
-    const gid = ev.groupId || ev._groupId || groupId;
-
-    try {
-      const res = await fetch(`${API_BASE}/api/groups/${gid}/events/${ev._id}/comments`, {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify({ text: trimmed }),
-      });
-
-      const updated = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(updated?.message || "Failed to add comment");
-
-      const patched = {
-        ...updated,
-        _groupName: ev._groupName,
-        _groupId: ev._groupId || String(updated.groupId),
-      };
-
-      setEvents((prev) => prev.map((x) => (x._id === patched._id ? patched : x)));
-    } catch (e) {
-      console.error(e);
-      setError(e.message || "Could not add comment.");
-    }
-  }
-
-  async function deleteComment(ev, commentId) {
-    const gid = ev.groupId || ev._groupId || groupId;
-
-    try {
-      const res = await fetch(
-        `${API_BASE}/api/groups/${gid}/events/${ev._id}/comments/${commentId}`,
-        { method: "DELETE", headers: getAuthHeaders() }
-      );
-
-      const updated = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(updated?.message || "Failed to delete comment");
-
-      const patched = {
-        ...updated,
-        _groupName: ev._groupName,
-        _groupId: ev._groupId || String(updated.groupId),
-      };
-
-      setEvents((prev) => prev.map((x) => (x._id === patched._id ? patched : x)));
-    } catch (e) {
-      console.error(e);
-      setError(e.message || "Could not delete comment.");
-    }
-  }
 
   return (
     <>
@@ -550,40 +497,6 @@ export default function Events() {
                     </div>
                   </div>
                 </div>
-
-                {/*comments for events*/}
-                <div className="comment-section">
-                  {(ev.comments || []).map((c) => (
-                    <div key={c._id} className="comment">
-                      <img src={safeAvatar(c.avatarUrl, currentUser.avatarUrl)} alt={c.authorName} />
-                      <div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span style={{ fontWeight: 600 }}>{c.authorName}</span>
-                          {String(c.userId) === String(currentUser.id) && (
-                            <button
-                              onClick={() => deleteComment(ev, c._id)}
-                              style={{
-                                border: "none",
-                                background: "transparent",
-                                color: "#999",
-                                cursor: "pointer",
-                                fontSize: "0.75rem",
-                              }}
-                            >
-                              Delete
-                            </button>
-                          )}
-                        </div>
-                        <div>{c.text}</div>
-                      </div>
-                    </div>
-                  ))}
-
-                  <CommentInput
-                    currentUser={currentUser}
-                    onSend={(text) => addComment(ev, text)}
-                  />
-                </div>
               </div>
             );
           })}
@@ -593,39 +506,6 @@ export default function Events() {
   );
 }
 
-function CommentInput({ onSend, currentUser }) {
-  const [text, setText] = useState("");
-
-  function handleKeyDown(e) {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      if (!text.trim()) return;
-      onSend(text);
-      setText("");
-    }
-  }
-
-  return (
-    <div className="comment-input">
-      <img src={safeAvatar(currentUser.avatarUrl, "/assets/pfp_1.png")} alt={currentUser.name} />
-      <input
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Write a comment..."
-      />
-      <button
-        onClick={() => {
-          if (!text.trim()) return;
-          onSend(text);
-          setText("");
-        }}
-      >
-        ➤
-      </button>
-    </div>
-  );
-}
 
 function formatEventTime(value) {
   if (!value) return "";
