@@ -338,8 +338,25 @@
     }
 
     .post p {
-      margin-bottom: 0.75rem;
+      margin-bottom: 0rem;
       color: #333;
+    }
+
+    /* Post Group Badge */
+    .post-group-badge {
+      display: inline-block;
+      background-color: #F58A07;
+      color: #FFF;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .dark-mode .post-group-badge {
+      background-color: #DEB841;
+      color: #000;
     }
 
     /* Post images grid layout */
@@ -1117,6 +1134,21 @@ flex-direction: column;
 gap: 16px;
 }
 
+/*fixing alginment for remember me box */
+.auth-remember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;         
+  margin-left: 1;      
+}
+
+.auth-remember input[type="checkbox"] {
+  margin: 0;           
+  width: 18px;
+  height: 18px;
+  transform: translateY(0.5px); 
+}
+
 .auth-card {
 background: white;
 padding: 32px;
@@ -1147,7 +1179,7 @@ transition: 0.2s ease;
 
 
 .auth-login-btn:hover {
-background: #8bbd96;
+background: #2a8b3f;
 }
 
 
@@ -1327,4 +1359,17 @@ main .card:hover
 {
   flex: 0 0 auto;
   white-space: nowrap;
+}
+
+/* fixing the coloring in dark mode for upcoming events*/
+.dark-mode .right-sidebar .card > h3 
+{
+  color: #66d18d; 
+}
+
+/* fixing dark mode for groups to*/
+.dark-mode .groups-two-col .card > h3,
+.dark-mode .create-group-card > h3 
+{
+  color: #66d18d; 
 }

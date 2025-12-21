@@ -462,7 +462,7 @@ export default function Home() {
                       </p>
                     )}
                     {post.groupName && (
-                      <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '0.25rem' }}>{post.groupName}</p>
+                      <span className="post-group-badge">{post.groupName}</span>
                     )}
                   </div>
                 </div>
