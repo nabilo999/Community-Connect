@@ -11,13 +11,13 @@ export default function Landing() {
 					<img src="/assets/logo_2_Unity.png" alt="CommunityConnect Logo" />
 				</div>
 				<div className="nav-buttons">
-                    <Link to="/auth">
-                    <i></i> Sign Up
-                    </Link>
+                    <Link to="/auth?mode=signup">
+  					<i></i> Sign Up
+					</Link>
 
-                    <Link to="/auth">
-                    <i></i> Login
-                    </Link>
+					<Link to="/auth?mode=login">
+  					<i></i> Login
+					</Link>
 					
 				</div>
 			</header>
@@ -28,9 +28,9 @@ export default function Landing() {
 					<h1>Connect. Act. Thrive</h1>
 					<p>Your platform for collective action</p>
 					<div className="banner-buttons">
-						<Link to="/auth">
+						<Link to="/auth?mode=signup">
 						<i></i>Join Community</Link>
-						<Link to="/auth">
+						<Link to="/auth?mode=signup">
 						<i></i>Create Community</Link>
 					</div>
 				</div>
