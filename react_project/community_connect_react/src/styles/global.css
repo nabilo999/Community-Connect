@@ -1373,3 +1373,112 @@ main .card:hover
 {
   color: #66d18d; 
 }
+/* ========================= */
+/* MOBILE RESPONSIVENESS */
+/* ========================= */
+@media (max-width: 768px) {
+
+  /* Prevent horizontal scrolling */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* MAIN LAYOUT → single column */
+  main {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  /* HIDE SIDE BARS ON MOBILE */
+  .left-sidebar,
+  .right-sidebar {
+    display: none;
+  }
+
+  /* HEADER FIX */
+  .top-nav {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+
+  .header-right {
+    gap: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  /* LOGO SCALE DOWN */
+  .logo {
+    font-size: 1rem;
+  }
+
+  /* COMPOSER */
+  .composer {
+    padding: 0.75rem;
+  }
+
+  .composer-top {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .composer img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .composer-image-preview {
+    margin-left: 0;
+  }
+
+  /* POSTS */
+  .post-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .post-header img {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* EVENTS PAGE */
+  .event-card-content {
+    flex-direction: column;
+  }
+
+  .event-card-image {
+    width: 100%;
+    height: 180px;
+  }
+
+  .event-card-right {
+    align-items: flex-start;
+  }
+
+  /* GROUPS */
+  .group-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* AUTH PAGES */
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px;
+  }
+
+  /* BANNER */
+  .banner-content h1 {
+    font-size: 2rem;
+  }
+
+  .banner-content p {
+    font-size: 1rem;
+  }
+
+  .banner-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
