@@ -1380,7 +1380,7 @@ main .card:hover
   display: none;
   position: fixed;
   top: 14px;
-  left: 16px;
+  left: 8px;
   z-index: 1100;
   font-size: 24px;
   background: none;
@@ -1501,4 +1501,247 @@ main .card:hover
   box-shadow: none !important;
   padding: 0 !important;
   border-radius: 0 !important;
+}
+/* ===== Mobile 3-dot Menu – Final Polished Design ===== */
+@media (max-width: 768px) {
+
+  .menu-dropdown {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 0.25rem 0;
+    min-width: 190px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+  }
+
+  .menu-dropdown a,
+  .menu-dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #152239;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  /* ICON STYLE */
+  .menu-dropdown a::before,
+  .menu-dropdown button::before {
+    font-size: 1.05rem;
+  }
+
+  /* Individual icons */
+  .menu-settings::before { content: "⚙️"; }
+  .menu-theme::before    { content: "🌙"; }
+  .menu-logout::before   { content: "🚪"; }
+
+  /* Hover effect */
+  .menu-dropdown a:hover,
+  .menu-dropdown button:hover {
+    background: #f0f7f4;
+    color: #2a8b3f;
+  }
+
+  /* Divider */
+  .menu-dropdown a:not(:last-child),
+  .menu-dropdown button:not(:last-child) {
+    border-bottom: 1px solid #eef2f7;
+  }
+
+  /* LOG OUT – danger but classy */
+  .menu-logout {
+    color: #c62828;
+    font-weight: 600;
+  }
+
+  .menu-logout:hover {
+    background: #fdecea;
+    color: #b71c1c;
+  }
+}
+/* Remove any CSS-added icons in mobile menu */
+.menu-dropdown a::before,
+.menu-dropdown button::before {
+  content: none !important;
+  display: none !important;
+}
+.menu-dropdown i {
+  margin-right: 0px;
+  color: #4cab74;
+}
+
+.menu-logout i {
+  color: #f44336;
+}
+/* ===================== */
+/* LANDING PAGE – MOBILE */
+/* ===================== */
+
+@media (max-width: 768px) {
+
+  /* Fix horizontal overflow (gray gap) */
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Banner / hero section */
+  .banner {
+    min-height: 65vh;
+    max-height: none;
+    background-position: center;
+    padding-top: 64px; /* space for fixed header */
+  }
+
+  .banner-overlay {
+    background: rgba(0, 0, 0, 0.45); /* better contrast on mobile */
+  }
+
+  .banner-content {
+    margin-left: 0;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .banner-content h1 {
+    font-size: 2rem;
+    line-height: 1.25;
+  }
+
+  .banner-content p {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  /* Hero buttons stack nicely */
+  .banner-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 1rem;
+  }
+
+  .banner-buttons a {
+    width: 100%;
+    max-width: 260px;
+    text-align: center;
+  }
+
+  /* How It Works section */
+  .how-it-works {
+    padding: 2rem 1rem;
+  }
+
+  .how-it-works h2 {
+    font-size: 1.75rem;
+  }
+
+  /* Cards stack and fit screen */
+  .cards {
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .cards .card {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+/* ===== Landing Header Mobile Fix ONLY ===== */
+@media (max-width: 768px) {
+  .nav-buttons a {
+    padding: 0.35rem 0.8rem;   /* shrink button size */
+    font-size: 0.8rem;        /* smaller text */
+    border-radius: 14px;      /* less pill-like */
+  }
+
+  .nav-buttons {
+    gap: 0.4rem;              /* reduce spacing between buttons */
+  }
+}
+/* ===================== */
+/* EVENTS PAGE – MOBILE */
+/* ===================== */
+
+@media (max-width: 768px) {
+
+  /* Page spacing */
+  .events-page {
+    padding: 1rem;
+  }
+
+  /* Event composer */
+  .composer {
+    padding: 1rem;
+  }
+
+  .composer-top {
+    align-items: center;
+  }
+
+  .composer textarea {
+    font-size: 0.95rem;
+  }
+
+  /* Stack dropdown + date input */
+  .composer-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .composer .group-select,
+  .composer input[type="date"] {
+    width: 100%;
+  }
+
+  /* Post / event cards */
+  .event-card {
+    padding: 0.9rem;
+  }
+
+  .event-card-content {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Event image full width */
+  .event-card-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .event-card-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  /* Text spacing */
+  .event-description {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .event-group-name,
+  .event-date {
+    font-size: 0.8rem;
+  }
+
+  /* Buttons */
+  .event-actions {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .event-actions button {
+    width: 100%;
+    text-align: center;
+  }
 }
