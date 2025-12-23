@@ -56,9 +56,17 @@ const Header = () => {
           </button>
 
           <div className="menu-dropdown">
-            <Link to="/settings">Settings</Link>
-            <button onClick={toggleTheme}>Toggle Theme</button>
-            <button onClick={handleLogout}>Log Out</button>
+            <Link to="/settings" className="menu-settings">
+              <i className="fa-solid fa-gear"></i> Settings
+            </Link>
+
+            <button onClick={toggleTheme} className="menu-theme">
+              <i className="fa-solid fa-moon"></i> Toggle Theme
+            </button>
+
+            <button onClick={handleLogout} className="menu-logout">
+              <i className="fa-solid fa-right-from-bracket"></i> Log Out
+            </button>
           </div>
         </div>
       </div>
