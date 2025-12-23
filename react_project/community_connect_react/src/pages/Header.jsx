@@ -11,41 +11,56 @@ const Header = () => {
     else document.body.classList.remove("dark-mode");
   }, [dark]);
 
-  const toggleTheme = (e) => {
-    e.preventDefault();
+  const toggleTheme = () => {
     setDark(!dark);
   };
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    // clear saved session so user is no longer signed in
+  const handleLogout = () => {
     localStorage.removeItem("cc_token");
     localStorage.removeItem("cc_user");
     sessionStorage.removeItem("cc_token");
     sessionStorage.removeItem("cc_user");
-    navigate("/auth"); // go to login page
+    navigate("/auth");
   };
 
   return (
     <header className="top-nav">
-  <div className="logo">
-    <span className="logo-text">Comm</span>
-    <span className="logo-square">U</span>
-    <span className="logo-text">nityConnect</span>
-  </div>
+      {/* Logo */}
+      <div className="logo">
+        <span className="logo-text">Comm</span>
+        <span className="logo-square">U</span>
+        <span className="logo-text">nityConnect</span>
+      </div>
 
+      {/* Right side */}
       <div className="header-right">
-        <Link to="/settings" className="header-link">
-          <i className="fa-solid fa-gear"></i>&nbsp; Settings
-        </Link>
+        {/* Desktop links */}
+        <div className="desktop-only header-links">
+          <Link to="/settings" className="header-link">
+            <i className="fa-solid fa-gear"></i>&nbsp; Settings
+          </Link>
 
-        <a onClick={toggleTheme} className="header-link theme-toggle" aria-label="Toggle theme">
-          <i className="fa-solid fa-moon"></i>&nbsp; Theme
-        </a>
+          <button onClick={toggleTheme} className="header-link">
+            <i className="fa-solid fa-moon"></i>&nbsp; Theme
+          </button>
 
-        <a href="#" onClick={handleLogout} className="header-link">
-          <i className="fa-solid fa-sign-out"></i>&nbsp; Log Out
-        </a>
+          <button onClick={handleLogout} className="header-link">
+            <i className="fa-solid fa-sign-out"></i>&nbsp; Log Out
+          </button>
+        </div>
+
+        {/* Mobile menu */}
+        <div className="mobile-only mobile-menu">
+          <button className="menu-btn">
+            <i className="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+
+          <div className="menu-dropdown">
+            <Link to="/settings">Settings</Link>
+            <button onClick={toggleTheme}>Toggle Theme</button>
+            <button onClick={handleLogout}>Log Out</button>
+          </div>
+        </div>
       </div>
     </header>
   );
