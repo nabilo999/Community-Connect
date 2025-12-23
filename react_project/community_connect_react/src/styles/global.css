@@ -1374,43 +1374,42 @@ main .card:hover
   color: #66d18d; 
 }
 /* ===============================
-   MOBILE HARD OVERRIDE
+   MOBILE LAYOUT FIX (FINAL)
    =============================== */
 @media (max-width: 768px) {
 
-  /* Kill sidebar completely */
-  aside,
-  .sidebar,
-  nav,
-  .sidebar-container {
+  /* Hide sidebar on mobile */
+  .left-sidebar {
     display: none !important;
   }
 
-  /* Remove desktop spacing */
-  .main,
-  .content,
+  /* Remove desktop spacing caused by sidebar */
   .main-content,
+  .content,
   .page,
-  .layout {
+  .layout,
+  main {
     margin-left: 0 !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
     width: 100% !important;
   }
 
-  /* Feed full width */
+  /* Make feed full width */
   .feed,
   .post,
   .post-card {
-    width: 100% !important;
     max-width: 100% !important;
+    width: 100% !important;
   }
 
-  /* Images scale correctly */
+  /* Images responsive */
   img {
     max-width: 100%;
     height: auto;
   }
 
-  /* Header spacing */
+  /* Header spacing fix */
   header {
     padding: 0.75rem 1rem;
   }
